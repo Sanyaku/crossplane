@@ -21,6 +21,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/crossplane/crossplane/cmd/crank/util/loader"
 	"github.com/spf13/afero"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
@@ -90,11 +91,11 @@ func (c *LocalCache) Flush() error {
 // image should be a validate image name with the format: <registry>/<image>:<tag>.
 func (c *LocalCache) Load(image string) ([]*unstructured.Unstructured, error) {
 	cacheImagePath := c.getCachePath(image)
-	loader, err := NewLoader(cacheImagePath)
+	load, err := loader.NewLoader(cacheImagePath)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot create loader from %s", cacheImagePath)
 	}
-	schemas, err := loader.Load()
+	schemas, err := load.Load()
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot load schemas from %s", cacheImagePath)
 	}

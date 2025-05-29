@@ -27,6 +27,7 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver"
+	"github.com/crossplane/crossplane/cmd/crank/util/loader"
 	"github.com/google/go-containerregistry/pkg/crane"
 	conregv1 "github.com/google/go-containerregistry/pkg/v1"
 	"k8s.io/apimachinery/pkg/util/yaml"
@@ -194,7 +195,7 @@ func extractPackageContent(layer conregv1.Layer) ([][]byte, []byte, error) {
 		return nil, nil, errors.Wrapf(err, "cannot get uncompressed layer")
 	}
 
-	objs, err := load(rc)
+	objs, err := loader.LoadYamlStream(rc)
 	if err != nil {
 		return nil, nil, errors.Wrapf(err, "cannot read from layer")
 	}
