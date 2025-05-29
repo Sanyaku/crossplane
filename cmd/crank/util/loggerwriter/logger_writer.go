@@ -1,3 +1,4 @@
+// Package loggerwriter provides an io.Writer implementation that writes to a crossplane logger.
 package loggerwriter
 
 import (

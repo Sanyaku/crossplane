@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// Package loader provides functionality to load Kubernetes manifests from various sources
 package loader
 
 import (

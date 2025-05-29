@@ -27,12 +27,13 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver"
-	"github.com/crossplane/crossplane/cmd/crank/util/loader"
 	"github.com/google/go-containerregistry/pkg/crane"
 	conregv1 "github.com/google/go-containerregistry/pkg/v1"
 	"k8s.io/apimachinery/pkg/util/yaml"
 
 	"github.com/crossplane/crossplane-runtime/pkg/errors"
+
+	"github.com/crossplane/crossplane/cmd/crank/util/loader"
 )
 
 const maxDecompressedSize = 200 * 1024 * 1024 // 200 MB

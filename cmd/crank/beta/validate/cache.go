@@ -21,11 +21,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/crossplane/crossplane/cmd/crank/util/loader"
 	"github.com/spf13/afero"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
 	"github.com/crossplane/crossplane-runtime/pkg/errors"
+
+	"github.com/crossplane/crossplane/cmd/crank/util/loader"
 )
 
 // Cache defines an interface for caching schemas.
