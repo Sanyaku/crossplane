@@ -58,8 +58,8 @@ import (
 	"github.com/crossplane/crossplane-runtime/pkg/errors"
 	"github.com/crossplane/crossplane-runtime/pkg/fieldpath"
 
-	"github.com/crossplane/crossplane/internal/xresource/unstructured/claim"
-	"github.com/crossplane/crossplane/internal/xresource/unstructured/composite"
+	"github.com/crossplane/crossplane/pkg/xresource/unstructured/claim"
+	"github.com/crossplane/crossplane/pkg/xresource/unstructured/composite"
 )
 
 // DefaultPollInterval is the suggested poll interval for wait.For.

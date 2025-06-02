@@ -28,9 +28,9 @@ import (
 	"github.com/crossplane/crossplane/apis/apiextensions/v1alpha1"
 	"github.com/crossplane/crossplane/apis/apiextensions/v1beta1"
 	"github.com/crossplane/crossplane/cmd/crank/util/resource"
-	xpunstructured "github.com/crossplane/crossplane/internal/xresource/unstructured"
-	"github.com/crossplane/crossplane/internal/xresource/unstructured/claim"
-	"github.com/crossplane/crossplane/internal/xresource/unstructured/composite"
+	xpunstructured "github.com/crossplane/crossplane/pkg/xresource/unstructured"
+	"github.com/crossplane/crossplane/pkg/xresource/unstructured/claim"
+	"github.com/crossplane/crossplane/pkg/xresource/unstructured/composite"
 )
 
 // defaultConcurrency is the concurrency using which the resource tree if loaded when not explicitly specified.

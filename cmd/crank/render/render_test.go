@@ -40,8 +40,8 @@ import (
 	apiextensionsv1 "github.com/crossplane/crossplane/apis/apiextensions/v1"
 	pkgv1 "github.com/crossplane/crossplane/apis/pkg/v1"
 	"github.com/crossplane/crossplane/internal/controller/apiextensions/composite"
-	"github.com/crossplane/crossplane/internal/xresource/unstructured/composed"
-	ucomposite "github.com/crossplane/crossplane/internal/xresource/unstructured/composite"
+	"github.com/crossplane/crossplane/pkg/xresource/unstructured/composed"
+	ucomposite "github.com/crossplane/crossplane/pkg/xresource/unstructured/composite"
 )
 
 var (

@@ -35,7 +35,7 @@ import (
 	pkgv1beta1 "github.com/crossplane/crossplane/apis/pkg/v1beta1"
 	"github.com/crossplane/crossplane/cmd/crank/util/resource"
 	"github.com/crossplane/crossplane/internal/xpkg"
-	xpunstructured "github.com/crossplane/crossplane/internal/xresource/unstructured"
+	xpunstructured "github.com/crossplane/crossplane/pkg/xresource/unstructured"
 )
 
 // Client to get a Package with all its dependencies.
