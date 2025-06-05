@@ -992,22 +992,15 @@ func ComposedResourcesHaveFieldValueWithin(d time.Duration, dir, file, path stri
 	return func(ctx context.Context, t *testing.T, c *envconf.Config) context.Context {
 		t.Helper()
 
+		// Wait for the XR to be available.
+		ResourcesHaveConditionWithin(d, dir, file, xpv1.Available(), xpv1.ReconcileSuccess())(ctx, t, c)
+
 		uxr := &composite.Unstructured{} // modern schema
 		if err := decoder.DecodeFile(os.DirFS(dir), file, uxr, options...); err != nil {
 			t.Error(err)
 			return ctx
 		}
 
-		//matchComposition := func(o k8s.Object) bool {
-		//      u := asUnstructured(o)
-		//      got, err := fieldpath.Pave(u.Object).GetValue(path)
-		//}
-		//
-		//if err := wait.For(conditions.New(c.Client().Resources()).ResourceMatch(uxr, matchComposition), wait.WithTimeout(d), wait.WithInterval(DefaultPollInterval)); err != nil {
-		//
-		//}
-
-		// This should probably have a wait for the XR to be created.  Instead we put it after another Assess that does.
 		if err := c.Client().Resources().Get(ctx, uxr.GetName(), uxr.GetNamespace(), uxr); err != nil {
 			t.Errorf("cannot get composite %s: %v", uxr.GetName(), err)
 			return ctx

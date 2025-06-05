@@ -147,14 +147,14 @@ func TestBasicCompositionCluster(t *testing.T) {
 				funcs.ApplyResources(FieldManager, manifests, "xr.yaml"),
 				funcs.ResourcesCreatedWithin(30*time.Second, manifests, "xr.yaml"),
 			)).
-			// this is a super ugly merge of two Assessments, but it works, whereas splitting out the first and second funcs
-			// has been really difficult to get working
-			Assess("XRIsReadyAndComposedHasGenerateName", funcs.AllOf(
+			Assess("XRIsReady",
 				funcs.ResourcesHaveConditionWithin(2*time.Minute, manifests, "xr.yaml", xpv1.Available(), xpv1.ReconcileSuccess()),
+			).
+			Assess("ComposedResourceHasGenerateName",
 				funcs.ComposedResourcesHaveFieldValueWithin(1*time.Minute, manifests, "xr.yaml", "metadata.generateName", "basic-xr-cluster-", func(object k8s.Object) bool {
 					return object.GetObjectKind().GroupVersionKind().Kind == "ConfigMap"
 				}),
-			)).
+			).
 			Assess("XRHasStatusField",
 				funcs.ResourcesHaveFieldValueWithin(5*time.Minute, manifests, "xr.yaml", "status.coolerField", "I'M COOLER!"),
 			).
