@@ -30,7 +30,7 @@ import (
 
 	apiextensionsv1 "github.com/crossplane/crossplane/apis/apiextensions/v1"
 	pkgv1 "github.com/crossplane/crossplane/apis/pkg/v1"
-	"github.com/crossplane/crossplane/pkg/xresource/unstructured/composed"
+	"github.com/crossplane/crossplane/internal/xresource/unstructured/composed"
 	"github.com/crossplane/crossplane/test/e2e/config"
 	"github.com/crossplane/crossplane/test/e2e/funcs"
 )
@@ -71,7 +71,7 @@ func TestCompositionRevisionSelection(t *testing.T) {
 				funcs.ApplyResources(FieldManager, manifests, "setup/*.yaml"),
 				funcs.ResourcesCreatedWithin(30*time.Second, manifests, "setup/*.yaml"),
 				funcs.ResourcesHaveConditionWithin(1*time.Minute, manifests, "setup/definition.yaml", apiextensionsv1.WatchingComposite()),
-				funcs.ResourcesHaveConditionWithin(2*time.Minute, manifests, "setup/provider.yaml", pkgv1.Healthy(), pkgv1.Active()),
+				funcs.ResourcesHaveConditionWithin(2*time.Minute, manifests, "setup/functions.yaml", pkgv1.Healthy(), pkgv1.Active()),
 			)).
 			Assess("CreateClaim", funcs.AllOf(
 				funcs.ApplyResources(FieldManager, manifests, "claim.yaml"),
@@ -119,9 +119,6 @@ func TestBasicCompositionNamespaced(t *testing.T) {
 			Assess("XRHasStatusField",
 				funcs.ResourcesHaveFieldValueWithin(5*time.Minute, manifests, "xr.yaml", "status.coolerField", "I'M COOLER!"),
 			).
-			Assess("ConnectionSecretCreated",
-				funcs.ResourceHasFieldValueWithin(30*time.Second, &corev1.Secret{ObjectMeta: metav1.ObjectMeta{Namespace: "default", Name: "basic-secret-namespaced"}}, "data[super]", "c2VjcmV0Cg=="),
-			).
 			WithTeardown("DeleteXR", funcs.AllOf(
 				funcs.DeleteResources(manifests, "xr.yaml"),
 				funcs.ResourcesDeletedWithin(2*time.Minute, manifests, "xr.yaml"),
@@ -157,9 +154,6 @@ func TestBasicCompositionCluster(t *testing.T) {
 			).
 			Assess("XRHasStatusField",
 				funcs.ResourcesHaveFieldValueWithin(5*time.Minute, manifests, "xr.yaml", "status.coolerField", "I'M COOLER!"),
-			).
-			Assess("ConnectionSecretCreated",
-				funcs.ResourceHasFieldValueWithin(30*time.Second, &corev1.Secret{ObjectMeta: metav1.ObjectMeta{Namespace: "default", Name: "basic-secret-cluster"}}, "data[super]", "c2VjcmV0Cg=="),
 			).
 			WithTeardown("DeleteXR", funcs.AllOf(
 				funcs.DeleteResources(manifests, "xr.yaml"),

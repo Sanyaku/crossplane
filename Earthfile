@@ -254,7 +254,7 @@ image:
   ARG TARGETPLATFORM
   ARG TARGETARCH
   ARG TARGETOS
-  FROM --platform=${TARGETPLATFORM} gcr.io/distroless/static@sha256:5c7e2b465ac6a2a4e5f4f7f722ce43b147dabe87cb21ac6c4007ae5178a1fa58
+  FROM --platform=${TARGETPLATFORM} gcr.io/distroless/static@sha256:b7b9a6953e7bed6baaf37329331051d7bdc1b99c885f6dbeb72d75b1baad54f9
   COPY --platform=${NATIVEPLATFORM} (+go-build/crossplane --GOOS=${TARGETOS} --GOARCH=${TARGETARCH}) /usr/local/bin/
   COPY --dir cluster/crds/ /crds
   COPY --dir cluster/webhookconfigurations/ /webhookconfigurations
@@ -315,6 +315,22 @@ kubectl-setup:
   FROM --platform=${NATIVEPLATFORM} curlimages/curl:8.8.0
   RUN curl -fsSL https://dl.k8s.io/${KUBECTL_VERSION}/kubernetes-client-${TARGETOS}-${TARGETARCH}.tar.gz|tar zx
   SAVE ARTIFACT kubernetes/client/bin/kubectl
+
+# Ko init will create the kodata dir for crd and webhook files in the crossplane controller binary path.
+ko-init:
+  FROM alpine:3.20
+  COPY (+go-generate/crds) ./kodata/crds
+  COPY --dir cluster/webhookconfigurations ./kodata/
+  RUN echo && \
+      echo "Now build the helm chart and apply the template in dry run mode through ko:" && \
+      echo "   earthly +helm-build" && \
+      echo "   helm template --dry-run --namespace crossplane-system --set image.ignoreTag=true \\" && \
+      echo "     --set image.repository=ko://github.com/crossplane/crossplane/cmd/crossplane \\" && \
+      echo "     --set extraEnvVarsCrossplaneInit.CRDS_PATH=/var/run/ko/crds \\" && \
+      echo "     --set extraEnvVarsCrossplaneInit.WEBHOOK_CONFIGS_PATH=/var/run/ko/webhookconfigurations \\" && \
+      echo "     crossplane ./_output/charts/crossplane*.tgz | ko apply -f -" && \
+      echo
+  SAVE ARTIFACT ./kodata AS LOCAL cmd/crossplane/kodata
 
 # kind-setup is used by other targets to setup kind.
 kind-setup:

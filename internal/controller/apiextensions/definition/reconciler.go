@@ -492,7 +492,6 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (reco
 
 	ro := []composite.ReconcilerOption{
 		composite.WithCompositeSchema(schema),
-		composite.WithConnectionPublishers(composite.NewAPIFilteredSecretPublisher(r.engine.GetCached(), d.GetConnectionSecretKeys())),
 		composite.WithCompositionSelector(composite.NewCompositionSelectorChain(
 			composite.NewEnforcedCompositionSelector(*d, r.record),
 			composite.NewAPIDefaultCompositionSelector(r.engine.GetCached(), *meta.ReferenceTo(d, v1.CompositeResourceDefinitionGroupVersionKind), r.record),
@@ -502,6 +501,13 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (reco
 		composite.WithRecorder(r.record.WithAnnotations("controller", composite.ControllerName(d.GetName()))),
 		composite.WithPollInterval(r.options.PollInterval),
 		composite.WithComposer(fc),
+		composite.WithFeatures(r.options.Features),
+	}
+
+	if schema == ucomposite.SchemaLegacy {
+		ro = append(ro,
+			composite.WithConnectionPublishers(composite.NewAPIFilteredSecretPublisher(r.engine.GetCached(), d.GetConnectionSecretKeys())),
+		)
 	}
 
 	// If realtime compositions are enabled we pass the ControllerEngine to the
