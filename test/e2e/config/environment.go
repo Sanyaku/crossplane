@@ -147,7 +147,7 @@ func (e *Environment) GetKindClusterName() string {
 	return *e.kindClusterName
 }
 
-// GetCrossplaneImage returns the image to use when running crossplane for these tests.Add commentMore actions
+// GetCrossplaneImage returns the image to use when running crossplane for these tests.Add commentMore actions.
 func (e *Environment) GetCrossplaneImage() string {
 	return *e.crossplaneImage
 }

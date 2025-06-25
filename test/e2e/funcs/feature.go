@@ -57,7 +57,6 @@ import (
 	xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 	"github.com/crossplane/crossplane-runtime/pkg/errors"
 	"github.com/crossplane/crossplane-runtime/pkg/fieldpath"
-
 	"github.com/crossplane/crossplane-runtime/pkg/resource/unstructured/claim"
 	"github.com/crossplane/crossplane-runtime/pkg/resource/unstructured/composite"
 )
@@ -996,7 +995,7 @@ func ClaimComposedResourcesHaveFieldValueWithin(d time.Duration, dir, file, path
 // ComposedResourcesHaveFieldValueWithin fails a test if the composed
 // resource created by the composition do not have the supplied value at the
 // supplied path within the supplied duration.
-func ComposedResourcesHaveFieldValueWithin(d time.Duration, dir, file, path string, want any, filter func(object k8s.Object) bool, options ...decoder.DecodeOption) features.Func { //nolint:gocognit // Not too much over.
+func ComposedResourcesHaveFieldValueWithin(d time.Duration, dir, file, path string, want any, filter func(object k8s.Object) bool, options ...decoder.DecodeOption) features.Func { 
 	return func(ctx context.Context, t *testing.T, c *envconf.Config) context.Context {
 		t.Helper()
 
