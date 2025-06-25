@@ -38,14 +38,13 @@ import (
 	"github.com/crossplane/crossplane-runtime/pkg/meta"
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 
+	"github.com/crossplane/crossplane-runtime/pkg/resource/unstructured/composed"
+	ucomposite "github.com/crossplane/crossplane-runtime/pkg/resource/unstructured/composite"
 	fnv1 "github.com/crossplane/crossplane/apis/apiextensions/fn/proto/v1"
 	apiextensionsv1 "github.com/crossplane/crossplane/apis/apiextensions/v1"
 	pkgv1 "github.com/crossplane/crossplane/apis/pkg/v1"
 	"github.com/crossplane/crossplane/internal/controller/apiextensions/composite"
 	"github.com/crossplane/crossplane/internal/xfn"
-	"github.com/crossplane/crossplane/pkg/xresource"
-	"github.com/crossplane/crossplane/pkg/xresource/unstructured/composed"
-	ucomposite "github.com/crossplane/crossplane/pkg/xresource/unstructured/composite"
 )
 
 // Wait for the server to be ready before sending RPCs. Notably this gives
@@ -406,14 +405,8 @@ func Render(ctx context.Context, log logging.Logger, in Inputs) (Outputs, error)
 // crossplane.io/claim-namespace, and crossplane.io/claim-name annotations.
 //
 // https://github.com/crossplane/crossplane/blob/0965f0/internal/controller/apiextensions/composite/composition_render.go#L117
-func SetComposedResourceMetadata(cd resource.Object, xr xresource.LegacyComposite, name string) error {
-
-	// We recommend composed resources let us generate a name for them. They'reAdd commentMore actions
-	// allowed to explicitly specify a name if they want though.
-	if cd.GetName() == "" && cd.GetGenerateName() == "" {
-		cd.SetGenerateName(xr.GetName() + "-")
-	}
-
+func SetComposedResourceMetadata(cd resource.Object, xr resource.LegacyComposite, name string) error {
+	cd.SetGenerateName(xr.GetName() + "-")
 	meta.AddAnnotations(cd, map[string]string{AnnotationKeyCompositionResourceName: name})
 	meta.AddLabels(cd, map[string]string{AnnotationKeyCompositeName: xr.GetName()})
 	if ref := xr.GetClaimReference(); ref != nil {
