@@ -408,7 +408,7 @@ func Render(ctx context.Context, log logging.Logger, in Inputs) (Outputs, error)
 // https://github.com/crossplane/crossplane/blob/0965f0/internal/controller/apiextensions/composite/composition_render.go#L117
 func SetComposedResourceMetadata(cd resource.Object, xr resource.LegacyComposite, name string) error {
 
-	// We recommend composed resources let us generate a name for them. They'reAdd commentMore actions
+	// We recommend composed resources let us generate a name for them. They're
 	// allowed to explicitly specify a name if they want though.
 	if cd.GetName() == "" && cd.GetGenerateName() == "" {
 		cd.SetGenerateName(xr.GetName() + "-")
