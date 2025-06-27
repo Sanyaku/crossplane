@@ -26,7 +26,7 @@ import (
 
 	"github.com/crossplane/crossplane-runtime/pkg/errors"
 
-	"github.com/crossplane/crossplane/cmd/crank/util/loader"
+	"github.com/crossplane/crossplane/cmd/crank/util/load"
 )
 
 // Cache defines an interface for caching schemas.
@@ -92,11 +92,11 @@ func (c *LocalCache) Flush() error {
 // image should be a validate image name with the format: <registry>/<image>:<tag>.
 func (c *LocalCache) Load(image string) ([]*unstructured.Unstructured, error) {
 	cacheImagePath := c.getCachePath(image)
-	load, err := loader.NewLoader(cacheImagePath)
+	loader, err := load.NewLoader(cacheImagePath)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot create loader from %s", cacheImagePath)
 	}
-	schemas, err := load.Load()
+	schemas, err := loader.Load()
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot load schemas from %s", cacheImagePath)
 	}

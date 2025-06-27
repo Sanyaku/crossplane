@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 // Package loader provides functionality to load Kubernetes manifests from various sources
-package loader
+package load
 
 import (
 	"bufio"
@@ -104,7 +104,7 @@ type StdinLoader struct{}
 
 // Load reads the contents from stdin.
 func (s *StdinLoader) Load() ([]*unstructured.Unstructured, error) {
-	stream, err := LoadYamlStream(os.Stdin)
+	stream, err := YamlStream(os.Stdin)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot load YAML stream from stdin")
 	}
@@ -167,11 +167,11 @@ func readFile(path string) ([][]byte, error) {
 	}
 	defer f.Close() //nolint:errcheck // Only open for reading.
 
-	return LoadYamlStream(f)
+	return YamlStream(f)
 }
 
-// LoadYamlStream loads a yaml stream from a reader into a 2d byte slice.
-func LoadYamlStream(r io.Reader) ([][]byte, error) {
+// YamlStream loads a yaml stream from a reader into a 2d byte slice.
+func YamlStream(r io.Reader) ([][]byte, error) {
 	stream := make([][]byte, 0)
 
 	yr := yaml.NewYAMLReader(bufio.NewReader(r))
