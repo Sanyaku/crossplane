@@ -42,7 +42,7 @@ type Cmd struct {
 	Resources  string `arg:"" help:"Resource sources as a comma-separated list of files, directories, or '-' for standard input."`
 
 	// Flags. Keep them in alphabetical order.
-	CacheDir              string `default:"~/.crossplane/cache"                                                       help:"Absolute path to the cache directory where downloaded schemas are stored."  predictor:"directory"`
+	CacheDir              string `default:"~/.crossplane/cache"                                                       help:"Absolute path to the cache directory where downloaded schemas are stored." predictor:"directory"`
 	CleanCache            bool   `help:"Clean the cache directory before downloading package schemas."`
 	SkipSuccessResults    bool   `help:"Skip printing success results."`
 	CrossplaneImage       string `help:"Specify the Crossplane image to be used for validating the built-in schemas."`
