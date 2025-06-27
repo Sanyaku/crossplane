@@ -81,15 +81,15 @@ type Inputs struct {
 
 // Outputs contains all outputs from the render process.
 type Outputs struct {
-	// the rendered xr
+	// The rendered XR
 	CompositeResource *ucomposite.Unstructured
-	// the rendered mrs derived from the xr
+	// The rendered downstream resources (typically MRs) derived from the XR
 	ComposedResources []composed.Unstructured
-	// the Function results (not render results)
+	// The Function results (not render results)
 	Results []unstructured.Unstructured
-	// the Crossplane context object
+	// The Crossplane context object
 	Context *unstructured.Unstructured
-	// the Function requirements
+	// The Function requirements
 	Requirements map[string]fnv1.Requirements
 
 	// TODO(negz): Allow returning desired XR connection details. Maybe as a
